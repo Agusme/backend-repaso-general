@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
 const path = require('path'); 
 require('dotenv').config()
@@ -10,3 +11,5 @@ app.use('/api', require('./src/routes/index.routes'));
 app.listen(3001, () => {
   console.log("servidor andando");
 });
+app.use(cors())
+app.use(morgan('dev'))
