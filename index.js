@@ -4,6 +4,7 @@ const app = express();
 const path = require('path'); 
 require('dotenv').config()
 require('./src/db/config')
+const cors = require("cors"); // No olvides importar cors
 
 app.use(express.static(path.join(__dirname, "../public")))
 app.use(express.json())
