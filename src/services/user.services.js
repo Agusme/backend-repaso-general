@@ -147,18 +147,22 @@ const inicioSesionUsuario = async (body) => {
       const token = jwt.sign(payload, process.env.JWT_SECRET);
 
       return {
-        code: 200,
+        statusCode: 200,
         token,
+        rol:usuarioExiste.rol
       };
     } else {
       return {
-        code: 400,
+        statusCode: 400,
       };
     }
   } catch (error) {
     console.log(error);
   }
 };
+
+
+
 
 module.exports = {
   nuevoUsuario,

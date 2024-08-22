@@ -21,8 +21,13 @@ description:{
 imagen:{
     type:String,
     default:''
+},
+bloqueado:{
+    type:Boolean,
+    
 }
 });
+
 
 const ProductoModel = model('Productos', ProductoSchema)
 

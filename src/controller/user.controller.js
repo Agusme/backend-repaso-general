@@ -65,10 +65,10 @@ const iniciarSesion = async(req, res)=>{
   try {
     const result = await serviciosDeUsuarios.inicioSesionUsuario(req.body);
 
-    if(result.code === 400){
+    if(result.statuscode === 400){
       res.status(400).json({msg:'Usuario y/o contraseña incorrecta'})
     }else{
-      res.status(200).json({msg:'Inicio de sesion correcta', token: result.token})
+      res.status(200).json({msg:'Inicio de sesion correcta', token: result.token, rol:result.rol})
     }
   } catch (error) {
     console.error('Error interno del servidor:', error); // Para depuración

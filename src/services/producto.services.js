@@ -239,6 +239,10 @@ const agregarProductosAlCarrito = async (idProducto, idUsuario) => {
         };
       }
       };
+
+
+
+
 module.exports = {
   nuevoProducto,
   obtenerProductos,
@@ -249,5 +253,6 @@ module.exports = {
   agregarProductosAfav,
   agregarProductosAlCarrito,
   borrarProductosAfav,
-  borrarProductosCaarrito
+  borrarProductosCaarrito,
+
 };
