@@ -24,7 +24,7 @@ imagen:{
 },
 bloqueado:{
     type:Boolean,
-    
+    default:false
 }
 });
 

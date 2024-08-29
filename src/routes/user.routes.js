@@ -9,6 +9,8 @@ const {
   actualizarUsuario,
   eliminarUsuario,
   iniciarSesion,
+  habilitarUnUsuario,
+  deshabilitarUnUsuario,
 } = require("../controller/user.controller");
 const { check } = require("express-validator");
 
@@ -44,5 +46,7 @@ router.post(
   ],
   iniciarSesion
 );
+router.put('/deshabilitar/:idUsuario', auth('admin'), deshabilitarUnUsuario)
+router.put('/habilitar/:idUsuario', auth('admin'), habilitarUnUsuario)
 
 module.exports = router;

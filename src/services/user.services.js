@@ -149,7 +149,8 @@ const inicioSesionUsuario = async (body) => {
       return {
         statusCode: 200,
         token,
-        rol:usuarioExiste.rol
+        rol:usuarioExiste.rol,
+        idUsuario:usuarioExiste._id,
       };
     } else {
       return {
@@ -161,6 +162,25 @@ const inicioSesionUsuario = async (body) => {
   }
 };
 
+const habilitarUsuario= async(idUsuario)=>{
+  const usuario = await UserModel.findById(idUsuario)
+  usuario.bloqueado = false
+  await usuario.save()
+  return{
+    msg:'Usuario habilitado',
+    statusCode:200
+  }
+}
+
+const deshabilitarUsuario= async(idUsuario)=>{
+  const usuario = await UserModel.findById(idUsuario)
+  usuario.bloqueado = true
+  await usuario.save()
+  return{
+    msg:'Usuario deshabilitado',
+    statusCode:200
+  }
+}
 
 
 
@@ -171,4 +191,6 @@ module.exports = {
   editarUsuario,
   borrarUsuario,
   inicioSesionUsuario,
+  deshabilitarUsuario,
+  habilitarUsuario
 };

@@ -1,6 +1,5 @@
 const { cloudinary } = require("../helpers/cloudinary");
 
-
 const ProductoModel = require("../models/producto.schema");
 const UserModel = require("../models/user.schema");
 
@@ -107,7 +106,7 @@ const imagenProducto = async (idProducto, file) => {
       statusCode: 200,
     };
   } catch (error) {
-    console.log("error al subir la img:", error)
+    console.log("error al subir la img:", error);
     return {
       msg: "Error al subir img",
       statusCode: 400,
@@ -116,48 +115,47 @@ const imagenProducto = async (idProducto, file) => {
 };
 
 const agregarProductosAfav = async (idProducto, idUsuario) => {
-try {
-  console.log("ID Producto:", idProducto);
+  try {
+    console.log("ID Producto:", idProducto);
     console.log("ID Usuario:", idUsuario);
-  const producto = await ProductoModel.findById(idProducto);
-  if (!producto) {
-    return {
-      msg: "Producto no encontrado",
-      statusCode: 404,
-    };
-  }
-  const usuario = await UserModel.findById(idUsuario);
-  if (!usuario) {
-    return {
-      msg: "Usuario no encontrado",
-      statusCode: 404,
-    };
-  }
-  const productoExiste = usuario.favoritos.find(
-    (prod) => prod.id === idProducto
-  );
-  if (productoExiste) {
-    return {
-      msg: "Producto ya existe en fav",
-      statusCode: 400
-    };
-  }
-usuario.favoritos.push(producto)
+    const producto = await ProductoModel.findById(idProducto);
+    if (!producto) {
+      return {
+        msg: "Producto no encontrado",
+        statusCode: 404,
+      };
+    }
+    const usuario = await UserModel.findById(idUsuario);
+    if (!usuario) {
+      return {
+        msg: "Usuario no encontrado",
+        statusCode: 404,
+      };
+    }
+    const productoExiste = usuario.favoritos.find(
+      (prod) => prod.id === idProducto
+    );
+    if (productoExiste) {
+      return {
+        msg: "Producto ya existe en fav",
+        statusCode: 400,
+      };
+    }
+    usuario.favoritos.push(producto);
 
-  await usuario.save();
-  return{
-    msg:'producto agregado al fav',
-    statusCode: 200
-  }
-  
-} catch (error) {
-  console.error("Error al agregar al fav:", error); 
+    await usuario.save();
+    return {
+      msg: "producto agregado al fav",
+      statusCode: 200,
+    };
+  } catch (error) {
+    console.error("Error al agregar al fav:", error);
 
-  return {
-    msg: "Error al agregar al fav",
-    statusCode: 500,
-  };
-}
+    return {
+      msg: "Error al agregar al fav",
+      statusCode: 500,
+    };
+  }
 };
 
 const agregarProductosAlCarrito = async (idProducto, idUsuario) => {
@@ -172,18 +170,17 @@ const agregarProductosAlCarrito = async (idProducto, idUsuario) => {
     if (productoExiste) {
       return {
         msg: "Producto ya existe en fav",
-        statusCode: 400
+        statusCode: 400,
       };
     }
-  
+
     usuario.carrito.push(producto);
 
     await usuario.save();
-    return{
-      msg:'producto agregado al carrito',
-      statusCode: 200
-    }
-    
+    return {
+      msg: "producto agregado al carrito",
+      statusCode: 200,
+    };
   } catch (error) {
     console.error("Error al agregar al fav:", error); // Imprime el error en la consola
 
@@ -192,56 +189,69 @@ const agregarProductosAlCarrito = async (idProducto, idUsuario) => {
       statusCode: 500,
     };
   }
-  };
+};
 
-  const borrarProductosAfav = async (idProducto, idUsuario) => {
-    try {
-      const usuario = await UserModel.findById(idUsuario);
-    
-      const posicionProducto = usuario.favoritos.findIndex(
-        (prod) => prod.id === idProducto
-      );
-  
-      usuario.favoritos.splice(posicionProducto, 1);
-      await usuario.save();
-      return{
-        msg:'producto borrado de fav',
-        statusCode: 200
-      }
-      
-    } catch (error) {
-      return {
-        msg: "Error al borrar de fav",
-        statusCode: 500,
-      };
-    }
+const borrarProductosAfav = async (idProducto, idUsuario) => {
+  try {
+    const usuario = await UserModel.findById(idUsuario);
+
+    const posicionProducto = usuario.favoritos.findIndex(
+      (prod) => prod.id === idProducto
+    );
+
+    usuario.favoritos.splice(posicionProducto, 1);
+    await usuario.save();
+    return {
+      msg: "producto borrado de fav",
+      statusCode: 200,
     };
+  } catch (error) {
+    return {
+      msg: "Error al borrar de fav",
+      statusCode: 500,
+    };
+  }
+};
 
-    const borrarProductosCaarrito = async (idProducto, idUsuario) => {
-      try {
-        const usuario = await UserModel.findById(idUsuario);
-      
-        const posicionProducto = usuario.carrito.findIndex(
-          (prod) => prod.id === idProducto
-        );
-    
-        usuario.carrito.splice(posicionProducto, 1);
-        await usuario.save();
-        return{
-          msg:'producto borrado de  carrito',
-          statusCode: 200
-        }
-        
-      } catch (error) {
-        return {
-          msg: "Error al borrar de carrito",
-          statusCode: 500,
-        };
-      }
-      };
+const borrarProductosCaarrito = async (idProducto, idUsuario) => {
+  try {
+    const usuario = await UserModel.findById(idUsuario);
 
+    const posicionProducto = usuario.carrito.findIndex(
+      (prod) => prod.id === idProducto
+    );
 
-
+    usuario.carrito.splice(posicionProducto, 1);
+    await usuario.save();
+    return {
+      msg: "producto borrado de  carrito",
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      msg: "Error al borrar de carrito",
+      statusCode: 500,
+    };
+  }
+};
+const habilitarProducto = async (idProducto) => {
+  const producto = await ProductoModel.findById(idProducto);
+  producto.bloqueado = false;
+  await producto.save();
+  return{
+    msg:'Producto habilitado',
+    statusCode: 200
+  }
+};
+const deshabilitarProducto = async (idProducto) => {
+  const producto = await ProductoModel.findById(idProducto);
+  producto.bloqueado = true;
+  await producto.save();
+  return{
+    msg:'Producto deshabilitado',
+    statusCode: 200
+  }
+};
 
 module.exports = {
   nuevoProducto,
@@ -254,5 +264,6 @@ module.exports = {
   agregarProductosAlCarrito,
   borrarProductosAfav,
   borrarProductosCaarrito,
-
+  habilitarProducto,
+  deshabilitarProducto,
 };
