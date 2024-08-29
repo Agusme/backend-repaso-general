@@ -253,6 +253,22 @@ const deshabilitarProducto = async (idProducto) => {
   }
 };
 
+const obtenerProductosFavoritos = async(idUsuario)=>{
+const usuario = await UserModel.findById(idUsuario)
+return{
+  productos: usuario.favoritos,
+  statusCode: 200
+}
+}
+
+const obtenerProductosCarrito = async(idUsuario)=>{
+  const usuario = await UserModel.findById(idUsuario)
+  return{
+    productos: usuario.carrito,
+    statusCode: 200
+  }
+  }
+
 module.exports = {
   nuevoProducto,
   obtenerProductos,
@@ -266,4 +282,6 @@ module.exports = {
   borrarProductosCaarrito,
   habilitarProducto,
   deshabilitarProducto,
+  obtenerProductosFavoritos,
+  obtenerProductosCarrito
 };

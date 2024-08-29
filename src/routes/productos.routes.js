@@ -1,5 +1,5 @@
 const express = require('express');
-const { crearProducto, traerTodosLosProductos, traerUnProducto, actualizarProducto, borrarProducto, agregarImagenProducto, agregarProductosAfav, borrarProductosAlCarrito, borrarProductosAFav, agregarProductosAlCarrito, habilitarUnProducto, deshabilitarUnProducto } = require('../controller/producto.controller');
+const { crearProducto, traerTodosLosProductos, traerUnProducto, actualizarProducto, borrarProducto, agregarImagenProducto, agregarProductosAfav, borrarProductosAlCarrito, borrarProductosAFav, agregarProductosAlCarrito, habilitarUnProducto, deshabilitarUnProducto, obtenerProductosFavUsuario, obtenerProductosCarritoUsuario } = require('../controller/producto.controller');
 const multer = require('../middlewares/multer');
 const auth = require('../middlewares/auth');
 
@@ -9,6 +9,10 @@ const router = express.Router()
 router.post("/", crearProducto);
 router.get("/",traerTodosLosProductos);
 router.get("/:idProducto", traerUnProducto);
+router.get('/obtenerProdFav',auth('usuario'),  obtenerProductosFavUsuario)
+router.get('/obtenerProdCarrito',auth('usuario'), obtenerProductosCarritoUsuario)
+
+
 router.put("/:idProducto", actualizarProducto);
 router.delete("/:idProducto", auth("admin"), borrarProducto);
 router.put('/habilitar/:idProducto', auth('admin'), habilitarUnProducto)
